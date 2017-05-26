@@ -1,0 +1,160 @@
+1. miejsce zajmuje: 
+Typ: Œlimak
+Po³o¿enie: 1005
+Prêdkoœæ: 8
+
+2. miejsce zajmuje: 
+Typ: Œlimak
+Po³o¿enie: 1005
+Prêdkoœæ: 8
+
+3. miejsce zajmuje: 
+Typ: Œlimak
+Po³o¿enie: 1005
+Prêdkoœæ: 8
+
+4. miejsce zajmuje: 
+Typ: Œlimak
+Po³o¿enie: 1005
+Prêdkoœæ: 8
+
+5. miejsce zajmuje: 
+Typ: Œlimak
+Po³o¿enie: 1005
+Prêdkoœæ: 8
+
+6. miejsce zajmuje: 
+Typ: Œlimak
+Po³o¿enie: 1005
+Prêdkoœæ: 8
+
+7. miejsce zajmuje: 
+Typ: Œlimak
+Po³o¿enie: 1005
+Prêdkoœæ: 8
+
+8. miejsce zajmuje: 
+Typ: Œlimak
+Po³o¿enie: 1005
+Prêdkoœæ: 8
+
+9. miejsce zajmuje: 
+Typ: Stonoga
+Iloœæ nóg: 87
+Po³o¿enie: 1003.26
+Prêdkoœæ: 3.59339
+
+10. miejsce zajmuje: 
+Typ: Stonoga
+Iloœæ nóg: 82
+Po³o¿enie: 1000.65
+Prêdkoœæ: 2.7805
+
+11. miejsce zajmuje: 
+Typ: Stonoga
+Iloœæ nóg: 75
+Po³o¿enie: 1000.62
+Prêdkoœæ: 2.1515
+
+12. miejsce zajmuje: 
+Typ: Stonoga
+Iloœæ nóg: 81
+Po³o¿enie: 1000.37
+Prêdkoœæ: 2.92684
+
+13. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+14. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+15. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+16. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+17. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+18. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+19. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+20. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+21. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+22. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+23. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+24. miejsce zajmuje: 
+Typ: ¯ó³w
+Po³o¿enie: 1000
+Prêdkoœæ: 4
+
+25. miejsce zajmuje: 
+Typ: Stonoga
+Iloœæ nóg: 62
+Po³o¿enie: 1000.35
+Prêdkoœæ: 1.10445
+
+26. miejsce zajmuje: 
+Typ: Stonoga
+Iloœæ nóg: 67
+Po³o¿enie: 1000.03
+Prêdkoœæ: 1.42735
+
+27. miejsce zajmuje: 
+Typ: Stonoga
+Iloœæ nóg: 63
+Po³o¿enie: 1000.61
+Prêdkoœæ: 1.04923
+
+28. miejsce zajmuje: 
+Typ: Stonoga
+Iloœæ nóg: 60
+Po³o¿enie: 1000.5
+Prêdkoœæ: 0.99677
+
+29. miejsce zajmuje: 
+Typ: Stonoga
+Iloœæ nóg: 60
+Po³o¿enie: 1000.25
+Prêdkoœæ: 0.99677
+
+30. miejsce zajmuje: 
+Typ: Stonoga
+Iloœæ nóg: 42
+Po³o¿enie: 1000.21
+Prêdkoœæ: 0.395931
+
