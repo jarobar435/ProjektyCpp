@@ -1,6 +1,7 @@
 //my
 #include "Symulacja.h"
 #include "Pokoj.h"
+#include "Modul.h"
 //sfml
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
@@ -11,10 +12,11 @@
 #include <thread> 
 #include <Windows.h>//dla sleep
 
-using namespace std;  //w .cpp chyba dopuszczalne jest u¿ycie przestrzeni nazw? w .h nale¿y unikam
+using namespace std; 
 
 //definizja zmiennej statycznej symulacji:
 bool Symulacja::zakonczenieWatkow = false;
+int Symulacja::godzina = 12;
 
 Symulacja::Symulacja(int ilosc)
 {
@@ -22,7 +24,7 @@ Symulacja::Symulacja(int ilosc)
 	DodawaniePokoi(ilosc);
 
 	//test poprawnoœci danych w konsoli
-	WypiszDane();
+	//WypiszDane();
 
 	//zarz¹dzanie oknem:
 	SymulujOkno();
@@ -389,18 +391,18 @@ void Symulacja::WypiszPrzelacznikSwiatla(int wybrany_pokoj, int wybrany_modul)
 }
 void Symulacja::SymulacjaCzasu(int krokWmin)
 {
-	int godzina = 12, minuty = 0;
+	int minuty = 0;
 	while (!getZakonczenieWatkow())
 	{
 		if (minuty != 0)
-			TekstyInterface[9]->setString(to_string(godzina) + ":" + to_string(minuty));
+			TekstyInterface[9]->setString(to_string(getGodzina()) + ":" + to_string(minuty));
 		else
-			TekstyInterface[9]->setString(to_string(godzina) + ":" + to_string(minuty) + "0");
+			TekstyInterface[9]->setString(to_string(getGodzina()) + ":" + to_string(minuty) + "0");
 
 		//zmien godzine:
 		if (minuty + krokWmin >= 60)
 		{
-			godzina += (minuty + krokWmin) / 60;
+			setGodzina(getGodzina() + (minuty + krokWmin) / 60);
 			minuty %= (minuty + krokWmin) / 60;
 		}
 		else
@@ -409,8 +411,8 @@ void Symulacja::SymulacjaCzasu(int krokWmin)
 		}
 		this_thread::sleep_for(chrono::seconds(3));
 
-		if (godzina >= 24)
-			godzina = 0;
+		if (getGodzina() >= 24)
+			setGodzina(0);
 	}
 }
 void Symulacja::tworzenieInterfejsu(int szerOkna, int wysOkna)
@@ -537,9 +539,14 @@ void Symulacja::SymulujOkno()
 
 	//metoda dodaj¹ca teksty interfejsu do wektora
 	tworzenieInterfejsu(szerokoscOkna, wysokoscOkna);
-	
+
 	//otwórz w¹tek z godzin¹:
 	thread watekGodzina(&Symulacja::SymulacjaCzasu, this, 30);
+	//oraz w¹tki z symulacjami sensorów:
+	thread wSensor1Sypialnia(&Modul::simulation, ref(pokoje[0]->Moduly[11]), 1);
+	thread wSensor2Sypialnia(&Modul::simulation, ref(pokoje[0]->Moduly[12]), 1);
+	thread wSensor1Goscinny(&Modul::simulation, ref(pokoje[1]->Moduly[8]), 1);
+	thread wSensor2Goscinny(&Modul::simulation, ref(pokoje[1]->Moduly[9]), 1);
 
 	//obs³uga zdarzeñ
 	sf::Event zdarzenie;
@@ -575,6 +582,10 @@ void Symulacja::SymulujOkno()
 			{
 				changeZakonczenieWatkow();
 				watekGodzina.join();
+				wSensor1Sypialnia.join();
+				wSensor2Sypialnia.join();
+				wSensor1Goscinny.join();
+				wSensor2Goscinny.join();
 				oknoAplikacji.close();
 			}
 
@@ -584,7 +595,7 @@ void Symulacja::SymulujOkno()
 				WspY = zdarzenie.mouseButton.y;
 				WspX = zdarzenie.mouseButton.x;
 
-				cout << endl << "X: " << WspX << "  Y: " << WspY;
+				//cout << endl << "X: " << WspX << "  Y: " << WspY;
 
 				//klikniêcie W³¹cz/Wy³¹cz modu³u
 				if (menu == 4 && WspX >= 1200 && WspY >= 340 && WspX <= 1450 && WspY <= 370)
@@ -722,13 +733,38 @@ void Symulacja::SymulujOkno()
 				//zliczanie zmiennych i rysowanie sprajtów
 				for (int i = 0; i < pokoje.size(); i++) //przechodzê po pokojach
 				{
-					for (int j = 0; j < pokoje[i]->Moduly.size(); j++)
+					for (int j = pokoje[i]->Moduly.size() - 1; j >= 0; j--)
 					{
 						string nazwa = pokoje[i]->Moduly[j]->getName();
+
+						if (nazwa == "Przelacznik swiatla")
+						{
+							if ((!(pokoje[i]->Moduly[j]->getChanged()) && pokoje[i]->Moduly[j]->getState()) || (pokoje[i]->Moduly[j]->getChanged() && !(pokoje[i]->Moduly[j]->getState())))//jeœli nie byl zmieniony ostatnio
+							{	//to zmien stan przekaznika
+								swiatla++;
+								pokoje[i]->Moduly[j]->setChanged(); //i zaznacz ze zmieniasz
+								switch (i)
+								{
+								case sypialnia:
+									pokoje[i]->Moduly[j - 6]->changeState();
+									break;
+								case goscinny:
+									pokoje[i]->Moduly[j - 5]->changeState();
+									break;
+								case lazienka:
+									pokoje[i]->Moduly[j - 3]->changeState();
+									break;
+								case pakamera:
+									pokoje[i]->Moduly[j - 2]->changeState();
+									break;
+								}
+							}
+							continue;
+						}
 						if (nazwa == "Przekaznik")
 						{
 							if (pokoje[i]->Moduly[j]->getState())
-							{
+							{//jeœli zmieniono stan przekaŸnika - z automatu zmieniam œwiat³o
 								przekazniki++;
 								WyswietlGrafikeSwiatla(i, j);
 							}
@@ -739,15 +775,12 @@ void Symulacja::SymulujOkno()
 							continue;
 						}
 						if (nazwa == "Przelacznik drzwi")
-						{
+						{//jeœli zmieniono stan przelacznika drzwi - sprawdzam pogodê i stan sensora i wnioskujê czy zmieniæ stan przekaŸnika
 							if (pokoje[i]->Moduly[j]->getState())
+							{
+								//wnioskowanie();
 								drzwi++;
-							continue;
-						}
-						if (nazwa == "Przelacznik swiatla")
-						{
-							if (pokoje[i]->Moduly[j]->getState())
-								swiatla++;
+							}
 							continue;
 						}
 					}
@@ -799,4 +832,14 @@ void Symulacja::SymulujOkno()
 			iterator++;
 		}
 	}
+}
+
+int Symulacja::getGodzina()
+{
+	return godzina;
+}
+
+void Symulacja::setGodzina(int godz)
+{
+	godzina = godz;
 }

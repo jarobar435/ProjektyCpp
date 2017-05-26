@@ -12,6 +12,7 @@ class Symulacja
 	std::vector <sf::Sprite*> GrafikiSFML;
 	std::vector <sf::Text*> TekstyInterface;
 	sf::Font Consolas;
+	static int godzina;
 	static bool zakonczenieWatkow;
 
 public:
@@ -23,6 +24,8 @@ public:
 	void DodawanieTekstuSFML(const int, const int, const int, const std::string, const wchar_t* tekst);
 	void WypiszDane();
 	void SymulujOkno();
+	static int getGodzina();
+	void setGodzina(int);
 	void DodawanieGrafikiSFML(std::string zrodlo, int originX, int originY, int wspX, int wspY, int rotate);
 	void WypiszPokojSFML(int wybrany_pokoj);
 	void WypiszKontrolerSFML(int wybrany_pokoj);

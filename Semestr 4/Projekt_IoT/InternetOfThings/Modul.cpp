@@ -1,6 +1,8 @@
 #include "Modul.h"
+#include "Symulacja.h"
 #include <iostream>
 #include <string>
+#include <thread>
 
 using namespace std;
 
@@ -69,6 +71,22 @@ void Modul::changeState()
 	//wirtualna
 }
 
+void Modul::setChanged()
+{
+	//virtual
+}
+
+bool Modul::getChanged()
+{
+	//virtual
+	return false;
+}
+
+void Modul::simulation(int)
+{
+	//virtual
+}
+
 
 Przekaznik::Przekaznik() : Modul("Przekaznik", "Wyjsciowy", 1)
 {
@@ -110,14 +128,7 @@ void Przekaznik::wypiszDane()
 void Przekaznik::wypisz()
 {
 	cout << getName() << " ID = " << getID() << " : ";
-	if (getState())
-	{
-		cout << "ON." << endl;
-	}
-	else
-	{
-		cout << "OFF." << endl;
-	};
+	if (getState() ? cout << "ON." << endl : cout << "OFF." << endl);
 }
 
 void Przekaznik::changeState()
@@ -127,7 +138,7 @@ void Przekaznik::changeState()
 
 SensorSwiatla::SensorSwiatla() : Modul("Sensor natezenia swiatla", "Wejsciowe", 2)
 {
-	LightValue = static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / (2)))+8;
+	LightValue = static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / (4)))+13;
 }
 SensorSwiatla::~SensorSwiatla()
 {
@@ -141,51 +152,46 @@ void SensorSwiatla::setValue(double newVal)
 {
 	LightValue = newVal;
 }
-void SensorSwiatla::simulation(int timeStep)
+void SensorSwiatla::simulation(int pauseTime)
 {
-	if (dayTime < 18000 || dayTime>39600) //jeœli przed godzina 5, lub po godzinie 12 - niech siê œciemnia
+	int godzina = Symulacja::getGodzina();
+	bool zmiana = false;
+	while (!Symulacja::getZakonczenieWatkow())
 	{
-		if (getValue() == 0) //jeœli ju¿ ciemniej byæ nie mo¿e
+		if (godzina != Symulacja::getGodzina())
+			zmiana = true;
+		else
+			zmiana = false;
+
+		godzina = Symulacja::getGodzina();
+		
+		if (godzina < 5 || godzina > 16)//jeœli przed godzina 5, lub po godzinie 16 - niech siê œciemnia
 		{
-			wypisz();
+			//jeœli zesz³a poni¿ej 0:
+			if (LightValue < 0)
+				LightValue = 0;
 
-			dayTime += timeStep;
-			if (dayTime > 86400)
-				dayTime -= 86400;
-			cout << "\nGodzina " << dayTime / timeStep << "." << endl;
+			if(zmiana)
+				LightValue -= (static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / 1)) + 0.75);
+			else
+				LightValue = (static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / 0.05*LightValue)) + LightValue);
 
-			return;
 		}
-		setValue(getValue() - (static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / 1))+0.75));
-		if (getValue() < 0) //jeœli bêdzie mniejsze od 0 (poziom kompletnego braku œwiat³a, w³aœciwie niedopuszczalny, ale na potrzeby projektu powiedzmy ¿e mo¿liwy
-			setValue(0);
-
-		wypisz();
-	}
-	else //jeœli ma siê rozjaœniaæ
-	{
-		if (getValue() == 20)
+		else //niech siê rozjaœnia
 		{
-			wypisz();
+			//jeœli wesz³a powy¿ej 20:
+			if (LightValue > 20)
+				LightValue = 20;
 
-			dayTime += timeStep;
-			if (dayTime > 86400)
-				dayTime -= 86400;
-			cout << "\nGodzina " << dayTime / timeStep << "." << endl;
-
-			return;
+			if (zmiana)
+				LightValue += (static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / 1)) + 0.75);
+			else
+				LightValue = (static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / 0.05*LightValue)) + LightValue);
 		}
-		setValue(getValue() + (static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / 2))+2));
-		if (getValue() > 20) //jeœli bêdzie mniejsze od 0 (poziom kompletnego braku œwiat³a, w³aœciwie niedopuszczalny, ale na potrzeby projektu powiedzmy ¿e mo¿liwy
-			setValue(20);
-
-		wypisz();
+		this_thread::sleep_for(chrono::seconds(pauseTime));
 	}
-	dayTime += timeStep;
-	if (dayTime > 86400)
-		dayTime -= 86400;
-	cout << "\nGodzina " << dayTime/timeStep << ":" << endl;
 }
+
 void SensorSwiatla::wypiszDane()
 {
 	cout << "Numer ID: " << getID() << endl
@@ -202,12 +208,7 @@ void SensorSwiatla::wypiszDane()
 }
 void SensorSwiatla::wypisz()
 {
-	cout << getName() << " ID = " << getID() << " : " << getValue() << " (";
-	if (getValue() > 10)
-		cout << "DZIEÑ).";
-	else
-		cout << "NOC).";
-	cout << endl;
+	cout << getName() << " ID = " << getID() << " : " << getValue() << endl;
 }
 
 PrzelacznikDrzwi::PrzelacznikDrzwi() : Modul("Przelacznik drzwi", "Wejsciowy", 1)
@@ -318,4 +319,14 @@ void PrzelacznikSwiatla::wypisz()
 void PrzelacznikSwiatla::changeState()
 {
 	LogicState = !LogicState;
+}
+
+bool PrzelacznikSwiatla::getChanged()
+{
+	return HasBeenRecentlyChanged;
+}
+
+void PrzelacznikSwiatla::setChanged()
+{
+	HasBeenRecentlyChanged = !HasBeenRecentlyChanged;
 }

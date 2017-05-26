@@ -20,6 +20,9 @@ public:
 	virtual double getValue();
 	virtual bool getState();
 	virtual void changeState();
+	virtual void setChanged();
+	virtual bool getChanged();
+	virtual void simulation(int);
 };
 
 class Przekaznik : public Modul
@@ -64,12 +67,15 @@ public:
 class PrzelacznikSwiatla : public Modul
 {
 	bool LogicState;
+	bool HasBeenRecentlyChanged = false;
 public:
 	PrzelacznikSwiatla();
 	PrzelacznikSwiatla(bool);
 	~PrzelacznikSwiatla();
 	bool getState();
 	void changeState();
+	bool getChanged();
+	void setChanged();
 	void wypiszDane();
 	void wypisz();
 };
