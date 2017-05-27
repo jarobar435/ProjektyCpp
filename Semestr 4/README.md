@@ -9,6 +9,6 @@ Uproszczony interfejs graficzny w SMFL-u, ze względu na wymogi prowadzącego ko
 - [x] uruchomić symulację sensorów natężenia światła w osobnych wątkach,
 - [x] zrealizować wnioskowanie na podstawie światła i pogody,
 - [ ] zająć się pamięcią (sprawdzić/zlikwidować wycieki),
-- [ ] zmienić pozycjonowanie elementów interfejsu graficznego na względne (rozmiar pobrany od użytkownika),
+- [ ] zmienić pozycjonowanie elementów interfejsu graficznego na względne (rozmiar pobrany od użytkownika - window.getSize().x//y),
 - [ ] poprawić metody do których przekazuję 2+ parametrów (przekaz w formie stringa/struktury),
 - [ ] zastanowić się nad uproszczeniem instrukcji switch - etykiety enum / zastąpienie poprzez zastosowanie w innym miejscu
