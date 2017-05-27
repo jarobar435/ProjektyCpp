@@ -12,12 +12,16 @@ class Symulacja
 	std::vector <sf::Sprite*> GrafikiSFML;
 	std::vector <sf::Text*> TekstyInterface;
 	sf::Font Consolas;
+	int pogoda;
 	static int godzina;
+	bool wniosekCzyWlaczacSwiatlo;
 	static bool zakonczenieWatkow;
+	
 
 public:
 	Symulacja(int ilosc = 4);
 	~Symulacja();
+	void wnioskowanie();
 	static bool getZakonczenieWatkow();
 	void changeZakonczenieWatkow();
 	void DodawaniePokoi(int ilosc);
@@ -38,7 +42,7 @@ public:
 	void SymulacjaCzasu(int krokWmin);
 	void tworzenieInterfejsu(int szerOkna, int wysOkna);
 	void WyswietlGrafikeSwiatla(int wybrany_pokoj, int wybrany_modul);
-	void ZmienPogode(int WspX, int WspY, int & pogoda);
+	void ZmienPogode(int WspX, int WspY);
 };
 
 enum NazwyPokojow

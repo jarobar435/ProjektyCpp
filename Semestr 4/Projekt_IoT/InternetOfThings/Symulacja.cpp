@@ -33,6 +33,29 @@ Symulacja::~Symulacja()
 {
 
 }
+void Symulacja::wnioskowanie()
+{
+	double *poziomSwiatla = new double;
+	*poziomSwiatla = 0;
+
+	for (int i = 0; i < 2; i++)
+	{
+		*poziomSwiatla += pokoje[0]->Moduly[11+i]->getValue() + pokoje[1]->Moduly[8 + i]->getValue();
+	}
+	
+	if ((*poziomSwiatla / 4) + (2 * pogoda) > 10)
+	{
+		wniosekCzyWlaczacSwiatlo = false;
+		TekstyInterface[16]->setString(L"Œwita");
+	}
+	else
+	{
+		wniosekCzyWlaczacSwiatlo = true;
+		TekstyInterface[16]->setString(L"Zmierzcha");
+	}
+
+	delete poziomSwiatla;
+}
 bool Symulacja::getZakonczenieWatkow()
 {
 	return zakonczenieWatkow;
@@ -503,25 +526,26 @@ void Symulacja::WyswietlGrafikeSwiatla(int wybrany_pokoj, int wybrany_modul)
 	}
 }
 
-void Symulacja::ZmienPogode(int WspX, int WspY, int &pogoda)
+void Symulacja::ZmienPogode(int WspX, int WspY)
 {
 	if (WspX >= 100 && WspY >= 380 && WspX <= 300 && WspY <= 430)
 	{
-		pogoda++;
 		switch (pogoda)
 		{
 		case 0:
 			TekstyInterface[15]->setFillColor(sf::Color::Cyan);
 			TekstyInterface[15]->setString("NEUTRALNA");
+			pogoda++;
 			break;
 		case 1:
 			TekstyInterface[15]->setFillColor(sf::Color::Yellow);
 			TekstyInterface[15]->setString(L"S£ONECZNA");
+			pogoda -= 2;
 			break;
-		case 2:
+		case -1:
 			TekstyInterface[15]->setFillColor(sf::Color::Blue);
 			TekstyInterface[15]->setString("DESZCZOWA");
-			pogoda -= 3;
+			pogoda++;
 			break;
 		}
 	}
@@ -605,7 +629,7 @@ void Symulacja::SymulujOkno()
 				//-------------------------------------------------------------------
 
 				//klikniêcie w pogodê:
-				ZmienPogode(WspX, WspY, pogoda);
+				ZmienPogode(WspX, WspY);
 				//-------------------------------------------------------------------
 
 				//klikniêcie w modul
@@ -776,20 +800,24 @@ void Symulacja::SymulujOkno()
 						}
 						if (nazwa == "Przelacznik drzwi")
 						{//jeœli zmieniono stan przelacznika drzwi - sprawdzam pogodê i stan sensora i wnioskujê czy zmieniæ stan przekaŸnika
+							if (!pokoje[i]->Moduly[j]->getState()) //jeœli prze³. wy³¹czony 
+							{		//i zmierzcha				//i œwieci siê w pokoju	
+								if (wniosekCzyWlaczacSwiatlo && (pokoje[i]->Moduly[0]->getState()))
+									pokoje[i]->Moduly[0]->changeState();
+							}
+
 							if (pokoje[i]->Moduly[j]->getState())
 							{
-								//wnioskowanie();
+								if (wniosekCzyWlaczacSwiatlo && !(pokoje[i]->Moduly[0]->getState()))
+									pokoje[i]->Moduly[0]->changeState();
 								drzwi++;
 							}
 							continue;
 						}
 					}
 				}
-
-				{
 					TekstyInterface[17]->setString(to_string(przekazniki));
 					TekstyInterface[18]->setString(to_string(drzwi));
-				}
 			}
 		}
 
@@ -815,6 +843,7 @@ void Symulacja::SymulujOkno()
 			{
 				oknoAplikacji.draw(*GrafikiSFML[i]);
 			}
+			wnioskowanie();
 		}
 
 		oknoAplikacji.display();
