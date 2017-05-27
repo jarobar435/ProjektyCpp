@@ -13,6 +13,16 @@ Pokoj::Pokoj(string typ, int ilPrzekaznik, int ilDrzwi, int ilPrzelacznik, int i
 
 Pokoj::~Pokoj()
 {
+	for (int i = 0; i < Kontrolery.size(); i++)
+	{
+		delete Kontrolery[i];
+	}
+	Kontrolery.clear();
+	for (int i = 0; i < Moduly.size(); i++)
+	{
+		delete Moduly[i];
+	}
+	Moduly.clear();
 }
 
 void Pokoj::WypiszDane()
@@ -130,38 +140,6 @@ void Sypialnia::DodawanieKontrolerow()
 	Kontrolery.push_back(dodawany);
 }
 
-//void Sypialnia::DodawanieModulow()
-//{
-//	Modul* dodawany;
-//	for (int i = 0; i < getIlPrzekaznik(); i++)
-//	{
-//		dodawany = new Przekaznik;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlDrzwi(); i++)
-//	{
-//		dodawany = new PrzelacznikDrzwi;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlPrzelacznik(); i++)
-//	{
-//		dodawany = new PrzelacznikSwiatla;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlSensorSwiatla(); i++)
-//	{
-//		dodawany = new SensorSwiatla;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//}
-
 Goscinny::Goscinny() : Pokoj::Pokoj("Goœcinny", 3, 2, 3, 1, 2)
 {
 	DodawanieKontrolerow();
@@ -174,37 +152,6 @@ void Goscinny::DodawanieKontrolerow()
 	Kontrolery.push_back(dodawany);
 }
 
-//void Goscinny::DodawanieModulow()
-//{
-//	Modul* dodawany;
-//	for (int i = 0; i < getIlPrzekaznik(); i++)
-//	{
-//		dodawany = new Przekaznik;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlDrzwi(); i++)
-//	{
-//		dodawany = new PrzelacznikDrzwi;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlPrzelacznik(); i++)
-//	{
-//		dodawany = new PrzelacznikSwiatla;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlSensorSwiatla(); i++)
-//	{
-//		dodawany = new SensorSwiatla;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//}
 
 Lazienka::Lazienka() : Pokoj::Pokoj("£azienka", 2, 1, 2, 1, 0)
 {
@@ -218,38 +165,6 @@ void Lazienka::DodawanieKontrolerow()
 	Kontrolery.push_back(dodawany);
 }
 
-//void Lazienka::DodawanieModulow()
-//{
-//	Modul* dodawany;
-//	for (int i = 0; i < getIlPrzekaznik(); i++)
-//	{
-//		dodawany = new Przekaznik;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlDrzwi(); i++)
-//	{
-//		dodawany = new PrzelacznikDrzwi;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlPrzelacznik(); i++)
-//	{
-//		dodawany = new PrzelacznikSwiatla;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlSensorSwiatla(); i++)
-//	{
-//		dodawany = new SensorSwiatla;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//}
-
 Pakamera::Pakamera() : Pokoj::Pokoj("Pakamera", 1, 1, 1, 1, 0)
 {
 	DodawanieKontrolerow();
@@ -261,35 +176,4 @@ void Pakamera::DodawanieKontrolerow()
 	Mikrokontroler* dodawany = new ArduinoMiniPro;
 	Kontrolery.push_back(dodawany);
 }
-//
-//void Pakamera::DodawanieModulow()
-//{
-//	Modul* dodawany;
-//	for (int i = 0; i < getIlPrzekaznik(); i++)
-//	{
-//		dodawany = new Przekaznik;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlDrzwi(); i++)
-//	{
-//		dodawany = new PrzelacznikDrzwi;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlPrzelacznik(); i++)
-//	{
-//		dodawany = new PrzelacznikSwiatla;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//
-//	for (int i = 0; i < getIlSensorSwiatla(); i++)
-//	{
-//		dodawany = new SensorSwiatla;
-//		Moduly.push_back(dodawany);
-//		Kontrolery.back()->takePins(dodawany->getPins());
-//	}
-//}
+

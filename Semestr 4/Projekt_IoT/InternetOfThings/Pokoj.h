@@ -1,4 +1,5 @@
 #pragma once
+#define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #include "Mikrokontroler.h"
 #include "Modul.h"
 #include <vector>

@@ -6,14 +6,10 @@
 
 using namespace std;
 
-const int zakresNocy = 10; //zmienna {0,20} dostosowywana do u¿ytkownika - jeœli pokuj jest oszklony i jasny - mniej; bez okien - max;
-int dayTime = 0; //dzieñ = 86400s; powiedzmy ¿e krok symulacji to 5s, wiêc zakres zmiennej 17280
 int Modul::idCounter = 1; //zmienna od inkrementacji ID modu³ów //definicja z deklaracji statycznej w .h
-
 
 Modul::Modul() : IDnumber(idCounter++), Name("NoName"), Type("NoType"), PinsConnection(NULL)
 {
-
 }
 
 Modul::Modul(std::string name, std::string type, int pins) : IDnumber(idCounter++), Name(name), Type(type), PinsConnection(pins)
@@ -198,12 +194,7 @@ void SensorSwiatla::wypiszDane()
 		<< "Nazwa: " << getName() << endl
 		<< "Typ urz¹dzenia: " << getType() << endl
 		<< "Iloœæ pinów do komunikacji: " << getPins() << endl
-		<< "Obecny poziom œwiat³a s³onecznego: " << getValue() << endl
-		<< "Wnioskowanie wg poziomu: ";
-	if (getValue() > zakresNocy)
-		cout << "DZIEÑ.";
-	else
-		cout << "NOC.";
+		<< "Obecny poziom œwiat³a s³onecznego: " << getValue() << endl;
 	cout << endl;
 }
 void SensorSwiatla::wypisz()

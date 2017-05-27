@@ -31,19 +31,38 @@ Symulacja::Symulacja(int ilosc)
 }
 Symulacja::~Symulacja()
 {
-
+	//vector.clear zwalnia wektor, ale nie wywo³uje destruktorów i nie usuwa samych obiektó <T*>
+	for (int i = 0; i < pokoje.size(); i++)
+	{
+		delete pokoje[i];
+	}
+	pokoje.clear();
+	for (int i = 0; i < WypisywaneDaneSFML.size(); i++)
+	{
+		delete WypisywaneDaneSFML[i];
+	}
+	WypisywaneDaneSFML.clear();
+	for (int i = 0; i < GrafikiSFML.size(); i++)
+	{
+		delete GrafikiSFML[i]->getTexture();
+		delete GrafikiSFML[i];
+	}
+	GrafikiSFML.clear();
+	for (int i = 0; i < TekstyInterface.size(); i++)
+	{
+		delete TekstyInterface[i];
+	}
+	TekstyInterface.clear();
 }
 void Symulacja::wnioskowanie()
 {
-	double *poziomSwiatla = new double;
-	*poziomSwiatla = 0;
-
+	poziomSwiatla = 0;
 	for (int i = 0; i < 2; i++)
 	{
-		*poziomSwiatla += pokoje[0]->Moduly[11+i]->getValue() + pokoje[1]->Moduly[8 + i]->getValue();
+		poziomSwiatla += pokoje[0]->Moduly[11+i]->getValue() + pokoje[1]->Moduly[8 + i]->getValue();
 	}
 	
-	if ((*poziomSwiatla / 4) + (2 * pogoda) > 10)
+	if ((poziomSwiatla / 4) + (2 * pogoda) > 10)
 	{
 		wniosekCzyWlaczacSwiatlo = false;
 		TekstyInterface[16]->setString(L"Œwita");
@@ -53,8 +72,6 @@ void Symulacja::wnioskowanie()
 		wniosekCzyWlaczacSwiatlo = true;
 		TekstyInterface[16]->setString(L"Zmierzcha");
 	}
-
-	delete poziomSwiatla;
 }
 bool Symulacja::getZakonczenieWatkow()
 {
@@ -113,7 +130,6 @@ void Symulacja::DodawanieGrafikiSFML(string zrodlo, int originX, int originY, in
 	add->setOrigin(originX, originY);
 	add->setPosition(wspX, wspY);
 	add->rotate(rotate);
-
 	GrafikiSFML.push_back(add);
 }
 void Symulacja::WypiszDane()
@@ -532,19 +548,19 @@ void Symulacja::ZmienPogode(int WspX, int WspY)
 	{
 		switch (pogoda)
 		{
-		case 0:
+		case _NEUTRALNIE:
 			TekstyInterface[15]->setFillColor(sf::Color::Cyan);
 			TekstyInterface[15]->setString("NEUTRALNA");
 			pogoda++;
 			break;
-		case 1:
-			TekstyInterface[15]->setFillColor(sf::Color::Yellow);
-			TekstyInterface[15]->setString(L"S£ONECZNA");
+		case _DESZCZOWO:
+			TekstyInterface[15]->setFillColor(sf::Color::Blue);
+			TekstyInterface[15]->setString(L"DESZCZOWA");
 			pogoda -= 2;
 			break;
-		case -1:
-			TekstyInterface[15]->setFillColor(sf::Color::Blue);
-			TekstyInterface[15]->setString("DESZCZOWA");
+		case _SLONECZNIE:
+			TekstyInterface[15]->setFillColor(sf::Color::Yellow);
+			TekstyInterface[15]->setString(L"S£ONECZNA");
 			pogoda++;
 			break;
 		}
@@ -560,6 +576,10 @@ void Symulacja::SymulujOkno()
 	//rozmiary stworzonego okna 
 	int szerokoscOkna = oknoAplikacji.getSize().x,
 		wysokoscOkna = oknoAplikacji.getSize().y;
+	if (szerokoscOkna < 1600 || wysokoscOkna < 900)
+	{
+		throw szerokoscOkna * 1000 + wysokoscOkna;
+	}
 
 	//metoda dodaj¹ca teksty interfejsu do wektora
 	tworzenieInterfejsu(szerokoscOkna, wysokoscOkna);
@@ -571,6 +591,10 @@ void Symulacja::SymulujOkno()
 	thread wSensor2Sypialnia(&Modul::simulation, ref(pokoje[0]->Moduly[12]), 1);
 	thread wSensor1Goscinny(&Modul::simulation, ref(pokoje[1]->Moduly[8]), 1);
 	thread wSensor2Goscinny(&Modul::simulation, ref(pokoje[1]->Moduly[9]), 1);
+	if (!wSensor1Sypialnia.joinable() || !wSensor2Sypialnia.joinable() || !wSensor1Goscinny.joinable() || !wSensor2Goscinny.joinable())
+	{
+		throw "wyst¹pi³ problem z wielow¹tkowoœci¹.";
+	}
 
 	//obs³uga zdarzeñ
 	sf::Event zdarzenie;

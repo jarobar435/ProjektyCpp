@@ -1,4 +1,5 @@
 #pragma once
+#define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #include <vector>
 #include "Pokoj.h"
 #include <string>
@@ -14,6 +15,7 @@ class Symulacja
 	sf::Font Consolas;
 	int pogoda;
 	static int godzina;
+	int poziomSwiatla;
 	bool wniosekCzyWlaczacSwiatlo;
 	static bool zakonczenieWatkow;
 	
@@ -45,7 +47,7 @@ public:
 	void ZmienPogode(int WspX, int WspY);
 };
 
-enum NazwyPokojow
+enum _NazwyPokojow
 {
 	sypialnia,
 	goscinny,
@@ -53,7 +55,7 @@ enum NazwyPokojow
 	pakamera
 };
 
-enum LokalizacjeSypialnia
+enum _LokalizacjeSypialnia
 {
 	LampaSufit,
 	LampkaNocna1,
@@ -61,15 +63,22 @@ enum LokalizacjeSypialnia
 	LampaTaras
 };
 
-enum LokalizacjeGoscinny
+enum _LokalizacjeGoscinny
 {
 	SwiatloSufit,
 	SwiatloKuchnia,
 	SwiatloTaras
 };
 
-enum LokalizacjeLazienka
+enum _LokalizacjeLazienka
 {
 	Sufit,
 	Lustro
+};
+
+enum _Pogoda
+{
+	_SLONECZNIE = -1,
+	_NEUTRALNIE,
+	_DESZCZOWO
 };

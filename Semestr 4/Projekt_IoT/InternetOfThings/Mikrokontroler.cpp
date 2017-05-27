@@ -16,13 +16,8 @@ Mikrokontroler::~Mikrokontroler()
 {
 }
 
-//sprawdzaj po kolei modu³y i jeœli coœ siê zmienia, zmieniaj stan przekaznika
 void Mikrokontroler::symulujKontroler()
 {
-	while (!Symulacja::getZakonczenieWatkow())
-	{
-
-	}
 }
 
 

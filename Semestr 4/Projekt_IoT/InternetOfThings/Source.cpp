@@ -1,3 +1,7 @@
+#define _CRTDBG_MAP_ALLOC
+#include <cstdlib>
+#include <crtdbg.h>
+#include <thread>
 #include <iostream>
 #include "Symulacja.h" //w main tylko tworzê obiekt symulacji, jej ca³oœæ zawarta w konstruktorze (tak mieliœmy robiæ na projekcie z 3 semestru), z tego powodu powy¿sze nag³ówki niepotrzebne
 #include <time.h>	//dla rand()
@@ -7,14 +11,27 @@ using namespace std;
 
 int main()
 {
-	srand(time(NULL));
-	setlocale(LC_ALL, ""); //dla polskich znaków w konsoli
-	//cout << thread::hardware_concurrency() << endl;
+	{//dodatkowa klamerka pozwala zdealokowaæ pamiêæ u¿yta na zmienne string - normalnie pokazane by³yby jako wyciek
+		srand(time(NULL));
+		setlocale(LC_ALL, ""); //dla polskich znaków w konsoli
 
-	cout << "Projekt zaliczeniowy!" << endl << endl;
+		try
+		{
+			Symulacja inteligentneMieszkanie;	//bez () - domyslne 4; pusty nawias - brak wartosci
+		}
+		catch (string _Exception)
+		{
+			cout << "Wyst¹pi³ b³¹d krytyczny - " << _Exception << endl
+				<< "Optymalna iloœæ w¹tków dla procesora u¿ytkownika: " << thread::hardware_concurrency();
+		}
+		catch (int _Exception)
+		{
+			cout << "Niestety GUI Symulatora nie mo¿na przeskalowaæ do rozdzielczoœci u¿ytkownika (" << _Exception/1000 << "x" << _Exception%1000 << ")."
+				<< endl << "Zalecana rozdzielczoœæ to 1600x800." << endl;
+		}
 
-	Symulacja inteligentneMieszkanie;	//bez () - domyslne 4; pusty nawias - brak wartosci
-
-	system("PAUSE");
+	}
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	//_CrtDumpMemoryLeaks();
 	return 0;
 }

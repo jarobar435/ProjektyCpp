@@ -1,4 +1,5 @@
 #pragma once
+#define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #include <string>
 
 class Modul
@@ -10,7 +11,7 @@ class Modul
 public:
 	Modul();
 	Modul(std::string name, std::string type, int pins);
-	~Modul();
+	virtual ~Modul();
 	int getID();
 	std::string getName();
 	std::string getType();

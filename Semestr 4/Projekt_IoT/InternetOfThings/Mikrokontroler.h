@@ -1,4 +1,5 @@
 #pragma once
+#define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #include <string>
 
 class Mikrokontroler
@@ -12,7 +13,7 @@ class Mikrokontroler
 	int IOpins;
 public:
 	Mikrokontroler(std::string name, double vcc, double memory, int pins, int clock);
-	~Mikrokontroler(); 
+	virtual ~Mikrokontroler(); 
 	void symulujKontroler();
 	int getID();
 	std::string getName();
