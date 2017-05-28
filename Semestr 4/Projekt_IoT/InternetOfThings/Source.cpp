@@ -1,17 +1,15 @@
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
 #include <crtdbg.h>
-#include <thread>
-#include <iostream>
 #include "Symulacja.h" //w main tylko tworzê obiekt symulacji, jej ca³oœæ zawarta w konstruktorze (tak mieliœmy robiæ na projekcie z 3 semestru), z tego powodu powy¿sze nag³ówki niepotrzebne
 #include <time.h>	//dla rand()
-#include <Windows.h> //dla Sleep()
+#include <iostream>
+#include <thread>
 
 using namespace std;
 
 int main()
 {
-	{//dodatkowa klamerka pozwala zdealokowaæ pamiêæ u¿yta na zmienne string - normalnie pokazane by³yby jako wyciek
 		srand(time(NULL));
 		setlocale(LC_ALL, ""); //dla polskich znaków w konsoli
 
@@ -30,8 +28,6 @@ int main()
 				<< endl << "Zalecana rozdzielczoœæ to 1600x800." << endl;
 		}
 
-	}
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtDumpMemoryLeaks();
 	return 0;
 }

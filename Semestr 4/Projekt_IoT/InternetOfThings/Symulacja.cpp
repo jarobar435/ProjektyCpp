@@ -104,6 +104,23 @@ void Symulacja::DodawaniePokoi(int ilosc)
 		pokoje.push_back(dodawany);
 	}
 }
+void Symulacja::CzyscWektorGrafik()
+{
+	for (int i = 2; i < GrafikiSFML.size(); i++)
+	{
+		delete GrafikiSFML[i]->getTexture();
+		delete GrafikiSFML[i];
+	}
+	GrafikiSFML.resize(2);
+}
+void Symulacja::CzyscWektorDanych()
+{
+	for (int i = 0; i < WypisywaneDaneSFML.size(); i++)
+	{
+		delete WypisywaneDaneSFML[i];
+	}
+	WypisywaneDaneSFML.clear();
+}
 void Symulacja::DodawanieTekstuSFML(const int pozX, const int pozY, const int rozm, const string kolor, const wchar_t* tekst)
 {
 	sf::Text* dodawany = new sf::Text;
@@ -145,7 +162,7 @@ void Symulacja::WypiszDane()
 void Symulacja::WypiszKontrolerSFML(int wybrany_pokoj)
 {
 	//czyszczê bufor
-	WypisywaneDaneSFML.clear();
+	CzyscWektorDanych();
 	//zmieniam istniej¹ce napisy
 	(*TekstyInterface[11]).setString("Kontroler:"); 
 	(*TekstyInterface[12]).setString("");
@@ -186,7 +203,7 @@ void Symulacja::WypiszKontrolerSFML(int wybrany_pokoj)
 void Symulacja::WypiszPokojSFML(int wybrany_pokoj)
 {
 	//czyszczê bufor
-	WypisywaneDaneSFML.clear();
+	CzyscWektorDanych();
 	//zmieniam istniej¹ce napisy
 	(*TekstyInterface[11]).setString("Pokój:");
 	(*TekstyInterface[12]).setString("");
@@ -233,7 +250,7 @@ void Symulacja::WypiszPokojSFML(int wybrany_pokoj)
 void Symulacja::WypiszListeModulowSFML(int wybrany_pokoj)
 {
 	//czyszczê bufor
-	WypisywaneDaneSFML.clear();
+	CzyscWektorDanych();
 	(*TekstyInterface[11]).setString(L"Modu³y:"); //zmieniam istniej¹ce napisy
 	(*TekstyInterface[12]).setString("");
 	(*TekstyInterface[13]).setString("");
@@ -266,7 +283,7 @@ void Symulacja::WypiszPrzekaznik(int wybrany_pokoj, int wybrany_modul)
 {
 	int space = 0;
 	//czyszczenie vectora
-	WypisywaneDaneSFML.clear();
+	CzyscWektorDanych();
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -310,7 +327,7 @@ void Symulacja::WypiszSensorSwiatla(int wybrany_pokoj, int wybrany_modul)
 {
 	int space = 0;
 	//czyszczenie vectora
-	WypisywaneDaneSFML.clear();
+	CzyscWektorDanych();
 
 	for (int i = 0; i < 6; i++)
 	{
@@ -344,7 +361,7 @@ void Symulacja::WypiszPrzelacznikDrzwi(int wybrany_pokoj, int wybrany_modul)
 {
 	int space = 0;
 	//czyszczenie vectora
-	WypisywaneDaneSFML.clear();
+	CzyscWektorDanych();
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -388,7 +405,7 @@ void Symulacja::WypiszPrzelacznikSwiatla(int wybrany_pokoj, int wybrany_modul)
 {
 	int space = 0;
 	//czyszczenie vectora
-	WypisywaneDaneSFML.clear();
+	CzyscWektorDanych();
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -753,7 +770,7 @@ void Symulacja::SymulujOkno()
 				switch (menu)
 				{
 				case 0:
-					WypisywaneDaneSFML.clear();
+					CzyscWektorDanych();
 					(*TekstyInterface[11]).setString("-> Pokoje");
 					(*TekstyInterface[12]).setString("-> Mikrokontrolery");
 					(*TekstyInterface[13]).setString(L"-> Modu³y");
@@ -772,8 +789,7 @@ void Symulacja::SymulujOkno()
 					break;
 				}
 
-				//zmiejszam vector, ¿eby usun¹æ wszystkie elem. o ind >=2
-				GrafikiSFML.resize(2);
+				CzyscWektorGrafik();
 				
 				//resetujê wypisywane zmienne
 				przekazniki = drzwi = swiatla = 0;

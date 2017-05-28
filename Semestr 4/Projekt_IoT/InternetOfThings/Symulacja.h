@@ -27,6 +27,8 @@ public:
 	static bool getZakonczenieWatkow();
 	void changeZakonczenieWatkow();
 	void DodawaniePokoi(int ilosc);
+	void CzyscWektorGrafik();
+	void CzyscWektorDanych();
 	void DodawanieTekstuSFML(const int, const int, const int, const std::string, const wchar_t* tekst);
 	void WypiszDane();
 	void SymulujOkno();
